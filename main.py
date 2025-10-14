@@ -35,7 +35,7 @@ def add_data():
     except (FileNotFoundError, json.JSONDecodeError):
         data = []
 
-    data.append({"id": "1"})
+    data.append(new_data)
 
     with open('data.json', 'w') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
