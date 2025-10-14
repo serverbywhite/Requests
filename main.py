@@ -26,13 +26,21 @@ def get_data():
     return jsonify(read_data()), 200
 
 # POST
-@app.route("/api/data", methods=["POST"])
-def create_data():
-    data = read_data()
-    new = request.get_json(force=True)
-    data.update(new)
-    write_data(data)
-    return jsonify({"msg": "Đã thêm dữ liệu"}), 201
+@app.route('/api/data', methods=['POST'])
+def add_data():
+    new_data = request.get_json()
+    try:
+        with open('data.json', 'r') as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = []
+
+    data.append(new_data)
+
+    with open('data.json', 'w') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+    return jsonify({'msg': 'Đã thêm dữ liệu'})
 
 # PUT
 @app.route("/api/data", methods=["PUT"])
